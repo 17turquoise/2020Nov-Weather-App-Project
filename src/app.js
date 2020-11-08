@@ -1,40 +1,4 @@
-//challenge1. get city and temperature
-
-let city = document.querySelector("#search-bar-result");
-city.addEventListener("submit", search);
-
-let apiKey = "7dc7836f71a474945c8b68b188f0066c";
-let units = "metric";
-let apiEndpoint = "https://api.openweathermap.org/data/2.5/weather";
-let apiUrl = `${apiEndpoint}?q=${city}&appid=${apiKey}&units=${units}`;
-function showTemperature(response) {
-  console.log(response.data);
-  let temperature = Math.round(response.data.main.temp);
-  console.log(temperature);
-  let realtimeTemp = document.querySelector("#currentTemp");
-  realtimeTemp.innerHTML = `${temperature}˚C`;
-}
-axios.get(apiUrl).then(showTemperature);
-
-function showCurrentLoca(information) {
-  console.log(information);
-}
-
-function showPosition(position) {
-  console.log(position);
-  let latitude = position.coords.latitude;
-  let longitude = position.coords.longitude;
-  let apiKey = "7dc7836f71a474945c8b68b188f0066c";
-  let units = "metric";
-  let apiEndpoint = "https://api.openweathermap.org/data/2.5/weather";
-  let apiUrl = `${apiEndpoint}?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=${units}`;
-  axios.get(apiUrl).then(showCurrentLoca);
-}
-
-navigator.geolocation.getCurrentPosition(showPosition);
-//challenge 2. get current location and temperature
-
-//challenge 1. Display the current city
+//Previous challenge 1. Display the current city
 function formatDate(date) {
   let yearOutput = date.getFullYear();
 
@@ -69,22 +33,65 @@ function formatDate(date) {
   return `${dayOutput} ${hourOutput}:${minuteOutput} ${monthOutput} ${dateOutput} ${yearOutput}`;
 }
 
-function search(event) {
+function showWeatherCondition(response) {
+  console.log(response.data);
+  console.log(response.data.name);
+  document.querySelector("#city").innerHTML = response.data.name;
+  document.querySelector("#temperature").innerHTML = Math.round(
+    response.data.main.temp
+  );
+  document.querySelector("#humidity").innerHTML = response.data.main.humidity;
+  document.querySelector("#wind").innerHTML = Math.round(
+    response.data.wind.speed
+  );
+  document.querySelector("#description").innerHTML =
+    response.data.weather[0].main;
+}
+
+function searchCity(city) {
+  let apiKey = "7dc7836f71a474945c8b68b188f0066c";
+  let units = "metric";
+  let apiEndpoint = "https://api.openweathermap.org/data/2.5/weather";
+  let apiUrl = `${apiEndpoint}?q=${city}&appid=${apiKey}&units=${units}`;
+  axios.get(apiUrl).then(showWeatherCondition);
+}
+
+function handleSubmit(event) {
+  debugger;
   event.preventDefault();
-  let cityElement = document.querySelector("#city");
-  let cityInput = document.querySelector("#city-source");
-  cityElement.innerHTML = cityInput.value;
+  let city = document.querySelector("#city-source").value;
+  searchCity(city);
+
+  // let cityElement = document.querySelector("#city");
+  // let cityInput = document.querySelector("#city-source");
+  // cityElement.innerHTML = cityInput.value;
+  // Make an API call to openweather API
+  // Once I get the response, we display city name and temepratuer
 }
 let dateElement = document.querySelector("#currentTime");
 
 let currentTime = new Date();
 dateElement.innerHTML = formatDate(currentTime);
 
-//challenge 2. display the city that you search for
+//Previous challenge 2. display the city that you search for
+function searchLocation(position) {
+  let apiKey = "7dc7836f71a474945c8b68b188f0066c";
+  let units = "metric";
+  let apiEndpoint = "https://api.openweathermap.org/data/2.5/weather";
+  let apiUrl =
+    "${apiEndpoint}?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}";
+  axios.get(apiUrl).then(showWeatherCondition);
+}
+
+function getCurrentLocation(event) {
+  event.preventDefault();
+  navitator.geolocation.getCurrentLocation(searchLocation);
+}
+
 let searchForm = document.querySelector("#search-bar-result");
-searchForm.addEventListener("submit", search);
+searchForm.addEventListener("submit", handleSubmit);
 
-// Challenge 3. convert celcius and fahrenheit
+let currentLocationButton = document.querySelector("#currentLoca");
+currentLocationButton.addEventListener("click", getCurrentLocation);
 
-let temperatureElement = document.querySelector("#temperature");
-let temperature = temperatureElement.innerHTML;
+searchCity("New York");
