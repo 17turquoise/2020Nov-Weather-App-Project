@@ -7,6 +7,7 @@ ul {
   list-style: none;
   padding: 0;
 }
+
 .card-frame {
   background-image: linear-gradient(to top, #48c6ef 0%, #6f86d6 100%);
   padding: 20px;
@@ -64,4 +65,10 @@ ul {
 }
 .weeklyLowTemp {
   color: #d9d9d9;
+}
+.openSource {
+  margin-left: 180px;
+}
+a:hover {
+  text-decoration: underline;
 }
