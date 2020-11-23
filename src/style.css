@@ -115,6 +115,8 @@ li:first-letter {
   white-space: nowrap;
 }
 .credit {
+  font-family: monospace;
+  font-size: 11.5px;
   position: relative;
-  left: 415px;
+  left: 420px;
 }
