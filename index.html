@@ -1,247 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🌊Weather Project</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
-  <script src="https://kit.fontawesome.com/ea8cf98150.js" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
-  <link rel="stylesheet" href="src/style.css" />
-  <title>WeatherApp</title>
-</head>
-
-<body>
-  <div class="container">
-    <div class="row">
-      <div class="col-7">
-
-        <div class="card">
-          <div class="card-body">
-            <div class="card-frame">
-
-              <span class="searchBar">
-                <div class="row">
-                  <div class="col-6">
-                    <form id="search-bar-result">
-                      <input type="text" class="form-control" placeholder="Type a CITY..." autofocus="on"
-                        id="city-source" />
-                      <span class="searchIcon">
-                        <button type="submit">
-                          <i class="fas fa-search"></i>
-                        </button>
-                        <button type="submit" id="currentLoca">
-                          <i class="fas fa-map-marker-alt"></i>
-                        </button></span>
-                    </form>
-                  </div>
-              </span>
-            </div>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+      crossorigin="anonymous"
+    />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="src/style.css"/>
+  </head>
+  <body>
+    <div class="container">
+      <div class="weather-app-frame">
+        <div class="weather-app">
+          <form id="search-form" class="mb-3">
             <div class="row">
-              <div class="col">
-                <div class="bodyText">
-                  <h1 id="city">TOKYO</h1>
-                  <ul>
-
-                    <li class="h4" id="currentTime">
-                    </li>
-                    <li class="h4" id="currentTemp">
-                      <span id="temperature">24</span>˚C
-                    </li>
-                    <li id="description">
-                      Cloud
-                    </li>
-                    <li>
-                      Humidity: <span id="humidity">77</span>%
-                    </li>
-                    <li>
-                      Wind: <span id="wind">8 </span>Km/h
-                    </li>
-                  </ul>
-
-                </div>
+              <div class="col-9">
+                <input
+                  type="search"
+                  placeholder="Type your city... :)"
+                  class="form-control"
+                  id="city-input"
+                  autocomplete="off"
+                />
               </div>
-              <div class="col">
-                <div class="todayWeather">
-                  <div class="todayImage">
-                    <i class="fas fa-cloud"></i>
-                  </div>
-                  <p class="todayTitle">Cloudy</p>
-                </div>
+              <div class="col-3">
+                <input
+                  type="submit"
+                  value="Search"
+                  class="btn btn-primary w-100"
+                />
               </div>
             </div>
+          </form>
 
-
-            <ul class="nav nav-pills mb-2 justify-content-end" id="pillsTab" role="tablist">
-              <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="pillHoulyTab" data-toggle="pill" href="#pillsHourly" role="tab"
-                  aria-controls="pillsHourly" aria-selected="true">Hourly</a>
-              </li>
-              <li class="nav-item" role="presentation">
-                <a class="nav-link" id="pillWeeklyTab" data-toggle="pill" href="#pillsWeekly" role="tab"
-                  aria-controls="pillsWeekly" aria-selected="false">Weekly</a>
-              </li>
+          <div class="overview">
+            <h1 id="city"></h1>
+            <ul>
+              <li>Last updated: <span id="date"></span></li>
             </ul>
+          </div>
 
-            <div class="tab-content" id="pillTabContent">
-              <div class="tab-pane fade show active" id="pillsHourly" role="tabpanel" aria-labelledby="pillHourlyTab">
-                <p class="contentTitle"><strong>Hourly</strong></p>
-                <div class="hourlyTotal">
-                  <div class="row">
-                    <div class="col">
-                      <div class="hourly1">
-                        <div class="hourlyTime">15:00</div>
-                        <div class="hourlyTemp">21˚C</div>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="hourly2">
-                        <div class="hourlyTime">18:00</div>
-                        <div class="hourlyTemp">19˚C</div>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="hourly3">
-                        <div class="hourlyTime">21:00</div>
-                        <div class="hourlyTemp">18˚C</div>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="hourly4">
-                        <div class="hourlyTime">24:00</div>
-                        <div class="hourlyTemp">16˚C</div>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="hourly5">
-                        <div class="hourlyTime">03:00</div>
-                        <div class="hourlyTemp">16˚C</div>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="hourly6">
-                        <div class="hourlyTime">06:00</div>
-                        <div class="hourlyTemp">18˚C</div>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="hourly7">
-                        <div class="hourlyTime">19:00</div>
-                        <div class="hourlyTemp">20˚C</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
-              <div class="tab-pane fade" id="pillsWeekly" aria-labelledby="pillWeeklyTab">
-                <p class="contentTitle"><strong> Weekly</strong></p>
-
-                <div class="weeklyTotal">
-                  <div class="row">
-                    <div class="col">
-                      <div class="weekly1">
-                        <div class="weeklyTitle">Wed</div>
-                        <div class="weeklyImage">
-                          <i class="fas fa-cloud-sun"></i>
-                        </div>
-                        <div class="weeklyHighTemp">21˚C　</div>
-                        <div class="weeklyLowtemp">/14˚C</div>
-                      </div>
-                    </div>
-
-                    <div class="col">
-                      <div class="weekly2">
-                        <div class="weeklyTitle">Thur</div>
-                        <div class="weeklyImage">
-                          <i class="fas fa-cloud-sun-rain"></i>
-                        </div>
-                        <div class="weeklyHighTemp">24˚C　</div>
-                        <div class="weeklyLowtemp">/17˚C</div>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="weekly3">
-                        <div class="weeklyTitle">Fri</div>
-                        <div class="weeklyImage">
-                          <i class="fas fa-cloud-showers-heavy"></i>
-                        </div>
-                        <div class="weeklyHighTemp">21˚C　</div>
-                        <div class="weeklyLowtemp">/18˚C</div>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="weekly4">
-                        <div class="weeklyTitle">Sat</div>
-                        <div class="weeklyImage">
-                          <i class="fas fa-cloud-sun-rain"></i>
-                        </div>
-                        <div class="weeklyHighTemp">22˚C　</div>
-                        <div class="weeklyLowtemp">/16˚C</div>
-                      </div>
-                    </div>
-
-                    <div class="col">
-                      <div class="weekly5">
-                        <div class="weeklyTitle">Sun</div>
-                        <div class="weeklyImage">
-                          <i class="fas fa-cloud"></i>
-                        </div>
-                        <div class="weeklyHighTemp">20˚C　</div>
-                        <div class="weeklyLowtemp">/16˚C</div>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="weekly6">
-                        <div class="weeklyTitle">Mon</div>
-                        <div class="weeklyImage">
-                          <i class="fas fa-cloud-sun"></i>
-                        </div>
-                        <div class="weeklyHighTemp">21˚C　</div>
-                        <div class="weeklyLowtemp">/18˚C</div>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="weekly7">
-                        <div class="weeklyTitle">Wed</div>
-                        <div class="weeklyImage">
-                          <i class="fas fa-cloud"></i>
-                        </div>
-                        <div class="weeklyHighTemp">20˚C　</div>
-                        <div class="weeklyLowtemp">/14˚C</div>
-                      </div>
-                    </div>
-                  </div>
-
+          <div class="row">
+            <div class="col-md-6">
+              <ul>
+                <li id="description"></li>
+                <li>Humidity: <span id="humidity"> </span>&#160;%</li>
+                <li>Wind: <span id="wind"> </span>&#160;km/h</li>
+                <li>Visibility: <span id="visibility"> </span>&#160;km</li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <div class="clearfix weather-temperature">
+                <img src="" alt="clear" class="float-left" id="icon" />
+                <div class="float-left">
+                  <strong id="temperature"> </strong>
+                  <span class="units"
+                    ><a href="#" id="celsius-link" class="active">˚C</a> |
+                    <a href="#" id="fahrenheit-link">˚F</a></span
+                  >
                 </div>
               </div>
             </div>
           </div>
-
+              <p class="content-title"><strong>Hourly</strong></p>
+              <div class="row weather-forecast" id="forecast"></div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  </div>
-  </div>
-  </div>
+    <small class="credit">
+      This project was coded by
+      <a href="https://www.linkedin.com/in/ina-pae-72800978/" target="”_blank”"
+        >Ina Pae</a
+      >
+      and is
+      <a
+        href="https://github.com/17turquoise/Weather-WkHr-App"
+        target="”_blank”"
+        >open-sourced on GitHub
+      </a>
+      and hosted on
+      <a
+        href="https://app.netlify.com/sites/brave-ardinghelli-16d308/overview"
+        target="”_blank”"
+        >Netlify.
+      </a>
+    </small>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-    crossorigin="anonymous"></script>
-  <script src="src/app.js"></script>
-  <p class="openSource">
-    <a href="https://github.com/17turquoise/Weather-WkHr-App" target=”_blank”> Open Source Code </a>by Ina Pae
-  </p>
-</body>
-
+    <script src="src/app.js"></script>
+  </body>
 </html>
